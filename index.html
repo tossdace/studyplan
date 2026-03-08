@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>25-Day Battle Plan — JEE & KEAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: #1e1e2e;
+    --border2: #252535;
+    --math: #f97316;
+    --physics: #3b82f6;
+    --chem: #22c55e;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --accent: #a855f7;
+    --done: #22c55e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; padding: 2rem 1rem 4rem; }
+  .noise { position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+  .container { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .exam-badge { display: inline-flex; gap: 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 0.4rem 1rem; font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 1rem; }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 10vw, 5.5rem); letter-spacing: 0.05em; line-height: 0.9; background: linear-gradient(135deg, #fff 30%, var(--muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
+  .subtitle { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+
+  .sticky-bar { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0.9rem 1rem; margin: 0 -1rem 2.5rem; }
+  .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .progress-label { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+  .progress-pct { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--done); }
+  .progress-track { width: 100%; height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--math), var(--physics), var(--chem)); transition: width 0.4s ease; width: 0%; }
+  .progress-sub { display: flex; gap: 1.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+  .sub-prog { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--muted); }
+  .sub-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; text-align: center; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; line-height: 1; margin-bottom: 0.2rem; }
+  .stat-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .legend { display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 600; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .drop-note { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 2rem; font-size: 0.82rem; color: #fca5a5; line-height: 1.6; }
+  .drop-note strong { color: var(--red); display: block; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+
+  .week { margin-bottom: 2rem; }
+  .week-header { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.8rem; padding-left: 0.5rem; border-left: 2px solid var(--border); }
+  .days-grid { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .day-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; animation: fadeIn 0.4s ease both; }
+  .day-card.math { border-left: 3px solid var(--math); }
+  .day-card.physics { border-left: 3px solid var(--physics); }
+  .day-card.chem { border-left: 3px solid var(--chem); }
+  .day-card.mock { border-left: 3px solid var(--accent); }
+  .day-card.revision { border-left: 3px solid var(--yellow); }
+  .day-card.completed { opacity: 0.55; }
+  .day-card.completed .day-num { color: var(--done) !important; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .day-header { display: grid; grid-template-columns: 52px 1fr auto 20px; align-items: center; gap: 0.8rem; padding: 0.9rem 1.1rem; cursor: pointer; transition: background 0.15s; }
+  .day-header:hover { background: rgba(255,255,255,0.02); }
+  .day-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; line-height: 1; color: var(--muted); text-align: center; }
+  .day-subject { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.2rem; }
+  .day-subject.math { color: var(--math); } .day-subject.physics { color: var(--physics); } .day-subject.chem { color: var(--chem); } .day-subject.mock { color: var(--accent); } .day-subject.revision { color: var(--yellow); }
+  .day-title { font-size: 0.92rem; font-weight: 600; color: var(--text); margin-bottom: 0.15rem; line-height: 1.3; }
+  .day-goal { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+
+  .priority-badge { font-family: 'Space Mono', monospace; font-size: 0.58rem; padding: 0.22rem 0.55rem; border-radius: 100px; white-space: nowrap; align-self: flex-start; }
+  .badge-emergency { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .badge-critical { background: rgba(234,179,8,0.15); color: var(--yellow); border: 1px solid rgba(234,179,8,0.3); }
+  .badge-normal { background: rgba(100,116,139,0.12); color: var(--muted); border: 1px solid rgba(100,116,139,0.2); }
+  .badge-mock { background: rgba(168,85,247,0.15); color: var(--accent); border: 1px solid rgba(168,85,247,0.3); }
+
+  .expand-icon { color: var(--muted); font-size: 0.75rem; transition: transform 0.25s; user-select: none; text-align: center; }
+  .day-card.open .expand-icon { transform: rotate(180deg); }
+
+  .checklist-panel { display: none; border-top: 1px solid var(--border); padding: 1rem 1.1rem 1.2rem; background: var(--surface2); }
+  .day-card.open .checklist-panel { display: block; }
+
+  .checklist-section { margin-bottom: 1rem; }
+  .checklist-section:last-child { margin-bottom: 0.5rem; }
+  .checklist-section-label { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+
+  .check-item { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.42rem 0.6rem; border-radius: 7px; cursor: pointer; transition: background 0.15s; margin-bottom: 0.2rem; user-select: none; }
+  .check-item:hover { background: rgba(255,255,255,0.03); }
+  .check-item.checked { opacity: 0.45; }
+  .check-box { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--border2); background: transparent; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; margin-top: 2px; }
+  .check-item.checked .check-box { background: var(--done); border-color: var(--done); }
+  .check-box svg { display: none; }
+  .check-item.checked .check-box svg { display: block; }
+  .check-label { font-size: 0.82rem; color: var(--text); line-height: 1.35; }
+  .check-item.checked .check-label { text-decoration: line-through; color: var(--muted); }
+
+  .day-progress-wrap { margin-top: 1rem; }
+  .day-progress-bar { height: 3px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .day-progress-fill { height: 100%; background: var(--done); border-radius: 100px; transition: width 0.3s ease; }
+  .day-progress-text { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--muted); margin-top: 0.35rem; text-align: right; }
+
+  footer { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="container">
+
+  <header>
+    <div class="exam-badge">⚡ KEAM PRIMARY &nbsp;|&nbsp; JEE SECONDARY</div>
+    <h1>25-DAY<br>BATTLE PLAN</h1>
+    <p class="subtitle">Maths · Physics · Chemistry &nbsp;—&nbsp; Exam: April 2nd</p>
+  </header>
+
+  <div class="sticky-bar">
+    <div class="progress-header">
+      <span class="progress-label">Overall Progress</span>
+      <span class="progress-pct" id="totalPct">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="totalBar"></div></div>
+    <div class="progress-sub">
+      <div class="sub-prog"><div class="sub-dot" style="background:var(--math)"></div><span id="mathPct">Maths 0%</span></div>
+      <div class="sub-prog"><div class="sub-dot" style="background:var(--physics)"></div><span id="physPct">Physics 0%</span></div>
+      <div class="sub-prog"><div class="sub-dot" style="background:var(--chem)"></div><span id="chemPct">Chem 0%</span></div>
+      <div class="sub-prog"><div class="sub-dot" style="background:#555"></div><span id="daysDone">0 / 25 days complete</span></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card"><div class="stat-num" style="color:var(--math)">11</div><div class="stat-label">Maths Days</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--physics)">8</div><div class="stat-label">Physics Days</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--chem)">4</div><div class="stat-label">Chem Days</div></div>
+  </div>
+
+  <div class="drop-note">
+    <strong>🚫 OFFICIALLY DROPPED — DO NOT TOUCH</strong>
+    Maths: 3D Geometry, Sequence &amp; Series (already strong) &nbsp;|&nbsp; Physics: Rotational Motion (zero KEAM weight, your brain wall) &nbsp;|&nbsp; Chemistry: Metallurgy, Solid State (never studied + low KEAM weight)
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--math)"></div>Maths</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--physics)"></div>Physics</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--chem)"></div>Chemistry</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Mock Test</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>Revision</div>
+  </div>
+
+  <div id="planner"></div>
+
+  <footer>KEAM APRIL 2nd &nbsp;·&nbsp; BUILT FOR ACE &nbsp;·&nbsp; NO EXCUSES</footer>
+</div>
+
+<script>
+const DAYS = [
+  { week:"Week 1 — Days 1–7 — Maths Emergency", days:[
+    { n:1, type:"math", badge:"emergency", title:"Differential Calculus — Limits & Continuity", goal:"Understand limits intuitively. L'Hôpital's rule. Continuity conditions.", tasks:{
+      "📖 Concepts & Theory":["Understand limit definition intuitively (no scary epsilon-delta)","L'Hôpital's rule — when to use it and when not","Left hand limit vs right hand limit","3 conditions for continuity at a point","Sandwich theorem with 2 examples"],
+      "🎯 KEAM PYQs":["Solve 8 KEAM limits PYQs","Solve 5 KEAM continuity PYQs","Note which limit types repeat most"],
+      "⚡ JEE PYQs":["Solve 5 JEE Mains limits PYQs","Mark any new tricks not seen in KEAM"]
+    }},
+    { n:2, type:"math", badge:"emergency", title:"Differential Calculus — Derivatives & Chain Rule", goal:"All differentiation rules. Chain rule, product rule, quotient rule. Implicit differentiation.", tasks:{
+      "📖 Concepts & Theory":["Power, exponential, log derivative rules","Chain rule — practice 10 composite functions","Product rule & quotient rule — 5 each","Implicit differentiation — 3 problems","Parametric differentiation basics"],
+      "🎯 KEAM PYQs":["Solve 10 KEAM differentiation PYQs","Solve 5 KEAM application-of-derivative PYQs"],
+      "⚡ JEE PYQs":["Solve 5 JEE differentiation PYQs","Time yourself: max 3 min per question"]
+    }},
+    { n:3, type:"math", badge:"emergency", title:"Differential Calculus — Applications", goal:"Maxima/minima, increasing/decreasing, tangent & normal.", tasks:{
+      "📖 Concepts & Theory":["First derivative test for max/min","Second derivative test","Finding intervals where function increases/decreases","Tangent and normal to curve at a point","Rolle's theorem and LMVT — statement + 1 problem each"],
+      "🎯 KEAM PYQs":["10 KEAM maxima/minima PYQs","5 KEAM tangent/normal PYQs"],
+      "⚡ JEE PYQs":["5 JEE application PYQs","Focus: which step saves the most time"]
+    }},
+    { n:4, type:"math", badge:"critical", title:"2D Geometry — Lines & Circles", goal:"Straight line equations, distance formula, angle between lines. Circle standard form, tangent conditions.", tasks:{
+      "📖 Concepts & Theory":["All 4 forms of straight line equation","Distance from point to line formula","Angle between two lines — tan formula","Circle: standard form (x-h)²+(y-k)²=r²","Condition for line to be tangent to circle"],
+      "🎯 KEAM PYQs":["10 KEAM straight line PYQs","5 KEAM circle PYQs"],
+      "⚡ JEE PYQs":["5 JEE coordinate geometry PYQs","Pattern-based recognition — skip full derivations"]
+    }},
+    { n:5, type:"math", badge:"critical", title:"2D Geometry — Parabola, Ellipse, Hyperbola", goal:"Standard forms only. Focus, directrix, tangent equations. Pattern-first approach.", tasks:{
+      "📖 Concepts & Theory":["Parabola: y²=4ax — focus, directrix, tangent","Ellipse: a, b, c relation, eccentricity formula","Hyperbola: asymptotes, eccentricity","Tangent condition for all 3 conics","Chord of contact formula"],
+      "🎯 KEAM PYQs":["10 KEAM conics PYQs","Which conic appears most in KEAM? Note it."],
+      "⚡ JEE PYQs":["5 JEE conics PYQs","Identify top 3 repeated question patterns"]
+    }},
+    { n:6, type:"math", badge:"emergency", title:"Integral Calculus — Standard Forms & Substitution", goal:"Standard integrals by memory. U-substitution heavy practice.", tasks:{
+      "📖 Concepts & Theory":["Memorize 20 standard integral forms (make a cheat sheet)","U-substitution — work 10 problems","Integration of trig functions","Partial fractions method basics","∫eˣ[f(x)+f'(x)]dx type — very common"],
+      "🎯 KEAM PYQs":["10 KEAM integration PYQs","Focus on substitution-type questions"],
+      "⚡ JEE PYQs":["5 JEE integration PYQs","Diff Calc must be solid before this day — no shortcuts"]
+    }},
+    { n:7, type:"math", badge:"emergency", title:"Integral Calculus — Definite Integrals & Area", goal:"Definite integral properties. Area under curve. Integration by parts basics.", tasks:{
+      "📖 Concepts & Theory":["6 standard properties of definite integrals","King's property — solve 5 problems using it","Area between two curves","Integration by parts: ILATE rule — 5 problems","Recognize when to switch method quickly"],
+      "🎯 KEAM PYQs":["10 KEAM definite integral PYQs","5 KEAM area-under-curve PYQs"],
+      "⚡ JEE PYQs":["5 JEE definite integral PYQs","Note which property cuts solve time in half"]
+    }},
+  ]},
+  { week:"Week 2 — Days 8–14 — Maths Finish + Physics Start", days:[
+    { n:8, type:"math", badge:"critical", title:"Complex Numbers", goal:"Argand plane, modulus, argument, polar form, De Moivre's theorem, roots of unity.", tasks:{
+      "📖 Concepts & Theory":["Argand plane — plot complex numbers","Modulus and argument calculation","Polar form and Euler's form conversion","De Moivre's theorem — apply to 3 problems","nth roots of unity — pattern and sum"],
+      "🎯 KEAM PYQs":["8 KEAM complex number PYQs","Note which topic appears most (usually argument/modulus)"],
+      "⚡ JEE PYQs":["5 JEE complex number PYQs","Self-contained chapter — aim to finish 100% today"]
+    }},
+    { n:9, type:"math", badge:"critical", title:"Functions + Combinations", goal:"Morning: Functions. Afternoon: Combinations. Close both gaps.", tasks:{
+      "📖 Concepts & Theory":["Domain and range — 5 function types","Injective, surjective, bijective — identify from examples","Composition f(g(x)) and inverse f⁻¹(x)","nCr formula and Pascal's triangle","Combinations with repetition — formula"],
+      "🎯 KEAM PYQs":["5 KEAM functions PYQs","5 KEAM combinations PYQs"],
+      "⚡ JEE PYQs":["3 JEE functions PYQs","3 JEE combinations PYQs"]
+    }},
+    { n:10, type:"math", badge:"normal", title:"Probability + Trigonometry Speed", goal:"Morning: Probability. Afternoon: Trig speed drills.", tasks:{
+      "📖 Concepts & Theory":["Conditional probability formula","Bayes' theorem — 2 problems","Binomial distribution: mean and variance","Trig identities — rapid recall drill (10 mins)","Inverse trig: principal values and range"],
+      "🎯 KEAM PYQs":["5 KEAM probability PYQs","5 KEAM trig PYQs — timed (3 min each)"],
+      "⚡ JEE PYQs":["3 JEE probability PYQs","3 JEE trig PYQs"]
+    }},
+    { n:11, type:"math", badge:"normal", title:"Matrices Speed Drills + Full Maths Revision", goal:"Morning: Matrices speed. Afternoon: Full Maths formula sheet revision.", tasks:{
+      "📖 Concepts & Theory":["Matrix multiplication speed drill — 5 problems","Determinant by cofactor and shortcut methods","Inverse of 2x2 and 3x3 matrices","Cayley-Hamilton theorem — statement only","Revise all formula sheets across Maths chapters"],
+      "🎯 KEAM PYQs":["5 KEAM matrices PYQs timed","20-question KEAM Maths mixed mock"],
+      "⚡ JEE PYQs":["3 JEE matrices PYQs","List all remaining weak chapters for Day 24"]
+    }},
+    { n:12, type:"physics", badge:"emergency", title:"Electric Charges & Fields", goal:"Coulomb's law, electric field, field lines, Gauss's law. Biggest Physics KEAM leak.", tasks:{
+      "📖 Concepts & Theory":["Coulomb's law — superposition principle","Electric field due to point charge, dipole, ring, disc","Electric field lines — 5 properties","Gauss's law statement and 3 applications","Electric flux definition and calculation"],
+      "🎯 KEAM PYQs":["10 KEAM electrostatics PYQs","Focus on field calculation and Coulomb Qs"],
+      "⚡ JEE PYQs":["5 JEE electrostatics PYQs","Note Gauss's law application tricks"]
+    }},
+    { n:13, type:"physics", badge:"emergency", title:"Moving Charges & Magnetism", goal:"Biot-Savart, Ampere's law, Lorentz force, cyclotron, solenoid.", tasks:{
+      "📖 Concepts & Theory":["Biot-Savart law — field due to straight wire and circular loop","Ampere's circuital law and applications","Lorentz force on a moving charge","Motion of charge in uniform magnetic field (circular)","Solenoid and toroid field formulas"],
+      "🎯 KEAM PYQs":["10 KEAM magnetism PYQs","Force on current-carrying conductor Qs specifically"],
+      "⚡ JEE PYQs":["5 JEE magnetism PYQs","Identify formula-pattern Qs vs conceptual Qs"]
+    }},
+    { n:14, type:"physics", badge:"normal", title:"Capacitance + Current Electricity", goal:"Morning: Capacitors. Afternoon: Kirchhoff's basics only — 3 KEAM Qs, don't over-invest.", tasks:{
+      "📖 Concepts & Theory":["Capacitor: series and parallel combinations","Energy stored in capacitor — formula","Effect of dielectric on capacitance","Kirchhoff's current law (KCL) and voltage law (KVL)","Wheatstone bridge balanced condition"],
+      "🎯 KEAM PYQs":["5 KEAM capacitor PYQs","3 KEAM current electricity PYQs — stop here"],
+      "⚡ JEE PYQs":["3 JEE capacitor PYQs","Current electricity JEE: skip — 3 KEAM Qs not worth deep JEE prep"]
+    }},
+  ]},
+  { week:"Week 3 — Days 15–21 — Physics Finish + Chemistry Start", days:[
+    { n:15, type:"physics", badge:"critical", title:"Ray Optics", goal:"Memorize formulas first, then problems. Equations are the only blocker here.", tasks:{
+      "📖 Concepts & Theory":["Mirror formula: 1/v + 1/u = 1/f with sign convention","Lens formula and lens maker's equation","Snell's law and critical angle for TIR","Refraction through prism: deviation formula","Optical instruments: microscope and telescope magnification"],
+      "🎯 KEAM PYQs":["8 KEAM ray optics PYQs","Focus on mirror and lens numerical Qs"],
+      "⚡ JEE PYQs":["5 JEE ray optics PYQs","Rising trend in JEE 2026 — take seriously"]
+    }},
+    { n:16, type:"physics", badge:"critical", title:"Motion 1D/2D + Work Energy + Laws of Motion", goal:"Projectile motion, energy conservation, Newton's laws. Heavy problem day.", tasks:{
+      "📖 Concepts & Theory":["3 equations of motion — apply to 5 problems","Projectile: range, max height, time of flight formulas","Relative motion in 2D — 2 problems","Work-energy theorem and conservation of energy","Linear momentum conservation — collision problems"],
+      "🎯 KEAM PYQs":["8 KEAM mechanics PYQs","5 KEAM work-energy PYQs"],
+      "⚡ JEE PYQs":["5 JEE mechanics PYQs","You have basics — push yourself to hard Qs today"]
+    }},
+    { n:17, type:"physics", badge:"normal", title:"Gravitation + Thermodynamics", goal:"Morning: Gravitation properly. Afternoon: Thermo first law + processes.", tasks:{
+      "📖 Concepts & Theory":["Kepler's 3 laws with examples","Orbital velocity and escape velocity derivation logic","Gravitational potential energy and binding energy","First law of thermodynamics — sign convention","4 thermodynamic processes: isothermal, adiabatic, isobaric, isochoric"],
+      "🎯 KEAM PYQs":["5 KEAM gravitation PYQs","3 KEAM thermodynamics PYQs"],
+      "⚡ JEE PYQs":["3 JEE gravitation PYQs","3 JEE thermodynamics PYQs"]
+    }},
+    { n:18, type:"physics", badge:"normal", title:"Kinetic Theory + Dual Nature + Atoms + Nuclei", goal:"All formula-based chapters. One focused session each.", tasks:{
+      "📖 Concepts & Theory":["KTG: RMS speed, average speed, pressure relation","Photoelectric effect: Einstein's equation, stopping potential","Bohr model: radius, velocity, energy level formulas","Radioactive decay law: N = N₀e^(-λt)","Half-life and mean life relation: T½ = 0.693/λ"],
+      "🎯 KEAM PYQs":["3 KEAM KTG PYQs","4 KEAM modern physics PYQs (atoms + nuclei + dual nature)"],
+      "⚡ JEE PYQs":["3 JEE atoms and nuclei PYQs","2 JEE dual nature PYQs"]
+    }},
+    { n:19, type:"physics", badge:"normal", title:"Semiconductors + Oscillations + Physics Revision", goal:"Semiconductors: 30 min max (your best). Oscillations dust. Full Physics formula review.", tasks:{
+      "📖 Concepts & Theory":["SHM: x = A sin(ωt+φ), velocity and acceleration formulas","Energy in SHM: KE + PE = constant","p-n junction diode: forward and reverse bias","Logic gates: AND, OR, NOT, NAND, NOR truth tables","Full Physics formula sheet — final revision pass"],
+      "🎯 KEAM PYQs":["3 KEAM semiconductors PYQs (quick — your best chapter)","3 KEAM oscillations PYQs"],
+      "⚡ JEE PYQs":["2 JEE semiconductors PYQs","Mark ALL remaining formula gaps for Day 24"]
+    }},
+    { n:20, type:"chem", badge:"critical", title:"Chemical Bonding + Atomic Structure", goal:"Bonding: VSEPR, hybridization, bond types. Atomic Structure: equations dust only.", tasks:{
+      "📖 Concepts & Theory":["VSEPR theory — predict geometry for 6 molecule types","sp, sp2, sp3 hybridization with examples","Bond order and bond length inverse relationship","4 quantum numbers: n, l, ml, ms — rules","Hund's rule, Aufbau principle, Pauli exclusion"],
+      "🎯 KEAM PYQs":["5 KEAM bonding PYQs","3 KEAM atomic structure PYQs"],
+      "⚡ JEE PYQs":["3 JEE bonding PYQs","Atomic structure: you have good basics — equations dust only, 30 min max"]
+    }},
+    { n:21, type:"chem", badge:"critical", title:"Equilibrium + Chemical Thermodynamics", goal:"5 KEAM Qs combined. Highest ROI Chemistry day.", tasks:{
+      "📖 Concepts & Theory":["Le Chatelier's principle — 5 application scenarios","Kp, Kc, Ksp expressions and relation Kp = Kc(RT)^Δn","pH scale, pOH, buffer solution calculation","Hess's law and Born-Haber cycle logic","Gibbs free energy: ΔG = ΔH - TΔS and spontaneity"],
+      "🎯 KEAM PYQs":["5 KEAM equilibrium PYQs","3 KEAM thermodynamics PYQs"],
+      "⚡ JEE PYQs":["3 JEE equilibrium PYQs","You have good basics — push to hard Qs now"]
+    }},
+  ]},
+  { week:"Week 4 — Days 22–25 — Chemistry Finish + Final Push", days:[
+    { n:22, type:"chem", badge:"critical", title:"GOC + Organic Reactions", goal:"GOC first — everything organic depends on it. Then name reactions only.", tasks:{
+      "📖 Concepts & Theory":["Inductive effect: +I and -I groups with examples","Resonance: rules and stability order","Hyperconjugation: effect on stability","Carbocation, carbanion, free radical stability order","Nucleophilic vs electrophilic reaction mechanisms"],
+      "🎯 KEAM PYQs":["5 KEAM GOC PYQs","3 KEAM aldehyde/ketone/amine name reaction PYQs"],
+      "⚡ JEE PYQs":["3 JEE GOC PYQs","3 JEE organic reactions PYQs"]
+    }},
+    { n:23, type:"chem", badge:"normal", title:"Coordination + d&f Block + Kinetics + Biomolecules", goal:"All memory-based. 2hrs coordination, 1hr each for rest.", tasks:{
+      "📖 Concepts & Theory":["Ligands types, coordination number, CFSE concept","IUPAC naming of coordination compounds — 5 examples","d-block: variable oxidation states and coloured compounds","Rate law, order of reaction, Arrhenius equation","Glucose structure, amino acids basics, DNA vs RNA"],
+      "🎯 KEAM PYQs":["3 KEAM coordination PYQs","3 KEAM kinetics PYQs","2 KEAM d-block PYQs"],
+      "⚡ JEE PYQs":["3 JEE coordination PYQs","Electrochemistry: Nernst equation + 2 problems — 30 min only"]
+    }},
+    { n:24, type:"mock", badge:"mock", title:"Full Mock Test — All 3 Subjects", goal:"Timed. Exam conditions. Analyse wrong answers only.", tasks:{
+      "📖 Concepts & Theory":["Set up full exam conditions — phone off, timed","Complete full KEAM-style mock: Maths + Physics + Chemistry","Mark every question you guessed (even if correct)","After test: identify top 5 weak areas by chapter","Make explicit target list for Day 25"],
+      "🎯 KEAM PYQs":["Use official KEAM mock or PYQ paper — all subjects","Score yourself with actual KEAM marking scheme"],
+      "⚡ JEE PYQs":["Note which chapters bled most marks","Honest assessment: where did time run out?"]
+    }},
+    { n:25, type:"revision", badge:"critical", title:"Weak Spots Only — Zero New Topics", goal:"Only fix what Day 24 mock showed. Formula sheets. Sleep early.", tasks:{
+      "📖 Concepts & Theory":["Review only Day 24 weak spot list — nothing else","Maths formula sheet: final read-through","Physics formula sheet: final read-through","Chemistry formula sheet: final read-through","Sleep by 10 PM. Exam is tomorrow."],
+      "🎯 KEAM PYQs":["Re-solve 3–5 wrong answers from mock only","No new PYQs today"],
+      "⚡ JEE PYQs":["Done. You've put in the work.","Trust the 25 days. Walk in calm."]
+    }},
+  ]},
+];
+
+function getKey(n, sec, i) { return `ace_d${n}_${encodeURIComponent(sec)}_${i}`; }
+
+function getState() {
+  try { return JSON.parse(localStorage.getItem('ace_studyplan_v2') || '{}'); }
+  catch(e) { return {}; }
+}
+function setState(s) {
+  try { localStorage.setItem('ace_studyplan_v2', JSON.stringify(s)); } catch(e) {}
+}
+
+function countTasksForDay(d) {
+  return Object.values(d.tasks).reduce((a, arr) => a + arr.length, 0);
+}
+function countCheckedForDay(d, state) {
+  let c = 0;
+  Object.entries(d.tasks).forEach(([sec, arr]) => arr.forEach((_, i) => { if(state[getKey(d.n, sec, i)]) c++; }));
+  return c;
+}
+
+function updateProgress() {
+  const state = getState();
+  let totalT=0, totalC=0, mathT=0, mathC=0, physT=0, physC=0, chemT=0, chemC=0, daysDone=0;
+  DAYS.forEach(w => w.days.forEach(d => {
+    const t = countTasksForDay(d);
+    const c = countCheckedForDay(d, state);
+    totalT+=t; totalC+=c;
+    if(d.type==='math'){mathT+=t;mathC+=c;}
+    else if(d.type==='physics'){physT+=t;physC+=c;}
+    else{chemT+=t;chemC+=c;}
+    if(c===t&&t>0) daysDone++;
+  }));
+  const pct = totalT ? Math.round(totalC/totalT*100) : 0;
+  document.getElementById('totalPct').textContent = pct+'%';
+  document.getElementById('totalBar').style.width = pct+'%';
+  document.getElementById('mathPct').textContent = `Maths ${mathT?Math.round(mathC/mathT*100):0}%`;
+  document.getElementById('physPct').textContent = `Physics ${physT?Math.round(physC/physT*100):0}%`;
+  document.getElementById('chemPct').textContent = `Chem ${chemT?Math.round(chemC/chemT*100):0}%`;
+  document.getElementById('daysDone').textContent = `${daysDone} / 25 days complete`;
+}
+
+function buildPlanner() {
+  const planner = document.getElementById('planner');
+  const state = getState();
+  const BADGE_CLASS = {emergency:'badge-emergency',critical:'badge-critical',normal:'badge-normal',mock:'badge-mock'};
+  const BADGE_TEXT = {emergency:'EMERGENCY',critical:'CRITICAL',normal:'OPTIMIZE',mock:'MOCK'};
+  const SUBJECT_LABEL = {math:'Maths',physics:'Physics',chem:'Chemistry',mock:'Mock Test',revision:'Final Revision'};
+
+  DAYS.forEach(w => {
+    const weekDiv = document.createElement('div');
+    weekDiv.className = 'week';
+    weekDiv.innerHTML = `<div class="week-header">${w.week}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'days-grid';
+
+    w.days.forEach((d, di) => {
+      const totalT = countTasksForDay(d);
+      const checkedT = countCheckedForDay(d, state);
+      const pct = totalT ? Math.round(checkedT/totalT*100) : 0;
+      const isDone = checkedT === totalT && totalT > 0;
+
+      const card = document.createElement('div');
+      card.className = `day-card ${d.type}${isDone?' completed':''}`;
+      card.style.animationDelay = (di*0.05)+'s';
+
+      let checklistHTML = '';
+      Object.entries(d.tasks).forEach(([sec, items]) => {
+        checklistHTML += `<div class="checklist-section"><div class="checklist-section-label">${sec}</div>`;
+        items.forEach((item, i) => {
+          const key = getKey(d.n, sec, i);
+          const chk = state[key] ? 'checked' : '';
+          checklistHTML += `<div class="check-item ${chk}" data-day="${d.n}" data-sec="${CSS.escape(sec)}" data-ravsec="${sec}" data-i="${i}">
+            <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label">${item}</span>
+          </div>`;
+        });
+        checklistHTML += '</div>';
+      });
+
+      card.innerHTML = `
+        <div class="day-header">
+          <div class="day-num">${String(d.n).padStart(2,'0')}</div>
+          <div class="day-content">
+            <div class="day-subject ${d.type}">${SUBJECT_LABEL[d.type]||d.type}</div>
+            <div class="day-title">${d.title}</div>
+            <div class="day-goal">${d.goal}</div>
+          </div>
+          <span class="priority-badge ${BADGE_CLASS[d.badge]||'badge-normal'}">${BADGE_TEXT[d.badge]||d.badge.toUpperCase()}</span>
+          <span class="expand-icon">▼</span>
+        </div>
+        <div class="checklist-panel">
+          ${checklistHTML}
+          <div class="day-progress-wrap">
+            <div class="day-progress-bar"><div class="day-progress-fill" id="fill_${d.n}" style="width:${pct}%"></div></div>
+            <div class="day-progress-text" id="txt_${d.n}">${checkedT} / ${totalT} tasks done</div>
+          </div>
+        </div>`;
+
+      card.querySelector('.day-header').addEventListener('click', () => card.classList.toggle('open'));
+
+      card.querySelectorAll('.check-item').forEach(item => {
+        item.addEventListener('click', e => {
+          e.stopPropagation();
+          const dayN = parseInt(item.dataset.day);
+          const sec = item.dataset.ravsec;
+          const i = parseInt(item.dataset.i);
+          const key = getKey(dayN, sec, i);
+          const s = getState();
+          s[key] = !s[key];
+          setState(s);
+          item.classList.toggle('checked', !!s[key]);
+
+          const newC = countCheckedForDay(d, s);
+          const newPct = totalT ? Math.round(newC/totalT*100) : 0;
+          document.getElementById(`fill_${d.n}`).style.width = newPct+'%';
+          document.getElementById(`txt_${d.n}`).textContent = `${newC} / ${totalT} tasks done`;
+          card.classList.toggle('completed', newC===totalT && totalT>0);
+          updateProgress();
+        });
+      });
+
+      grid.appendChild(card);
+    });
+    weekDiv.appendChild(grid);
+    planner.appendChild(weekDiv);
+  });
+}
+
+buildPlanner();
+updateProgress();
+</script>
+</body>
+</html>
